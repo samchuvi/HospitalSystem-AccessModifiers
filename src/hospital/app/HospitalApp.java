@@ -1,5 +1,6 @@
 package hospital.app;
 
+import hospital.admin.AdminDepartment;
 import hospital.records.Doctor;
 import hospital.records.Patient;
 import hospital.staff.Receptionist;
@@ -7,7 +8,7 @@ import hospital.staff.Receptionist;
 /**
  * HospitalApp is the entry point. It is in its OWN package (hospital.app),
  * so it can only use the PUBLIC parts of every other class.
- * Sections 1-3 demonstrate staff, receptionist and doctor access.
+ * The commented-out lines show what access modifiers BLOCK at compile time.
  */
 public class HospitalApp {
 
@@ -19,6 +20,7 @@ public class HospitalApp {
 
         Doctor doctor = new Doctor("D101", "Mugisha Peter", "General Medicine");
         Receptionist receptionist = new Receptionist("R201", "Achieng Grace");
+        AdminDepartment admin = new AdminDepartment();
 
         System.out.println("1. STAFF (protected fields used by subclasses, shown via public method)");
         doctor.introduce();
@@ -34,6 +36,21 @@ public class HospitalApp {
         doctor.viewMedicalRecord(p1);
         doctor.updateMedicalRecord(p1, "Malaria", "Artemether-Lumefantrine, 3 days");
         doctor.viewMedicalRecord(p1);
+
+        System.out.println("\n4. ADMINISTRATION - financial records protected by private data + PIN");
+        admin.createBill("ADM-2026", "P001", 250000, "Jubilee Health");
+        admin.recordPayment("ADM-2026", "P001", 100000);
+        admin.printFinancialReport("ADM-2026", "P001");
+
+        System.out.println("\n5. UNAUTHORISED ATTEMPT (wrong PIN)");
+        admin.printFinancialReport("1234", "P001");
+
+        // ---------------- THESE LINES WOULD NOT COMPILE ----------------
+        // p1.diagnosis = "Flu";            // ERROR: diagnosis is PRIVATE in Patient
+        // p1.getDiagnosis();               // ERROR: getDiagnosis() is package-private (hospital.records only)
+        // doctor.staffId = "X";            // ERROR: staffId is PROTECTED (subclasses only)
+        // FinancialRecord f = null;        // ERROR: FinancialRecord is package-private (hospital.admin only)
+        // admin.isAuthorised("ADM-2026");  // ERROR: isAuthorised() is PRIVATE in AdminDepartment
 
         System.out.println("\n=== End of demonstration ===");
     }
