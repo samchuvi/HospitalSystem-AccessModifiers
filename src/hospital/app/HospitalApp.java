@@ -7,6 +7,7 @@ import hospital.staff.Receptionist;
 /**
  * HospitalApp is the entry point. It is in its OWN package (hospital.app),
  * so it can only use the PUBLIC parts of every other class.
+ * Sections 1-3 demonstrate staff, receptionist and doctor access.
  */
 public class HospitalApp {
 
